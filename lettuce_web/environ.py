@@ -20,6 +20,13 @@ class LettuceWebTestEnviron(object):
 
         pass
 
+    def build_url(self, url):
+        """
+        Method to build urls with tools from particular framework
+        """
+        raise NotImplementedError(u"This method should be implemented "\
+                                  u"to build urls to the views")
+
     def destroy(self):
         """
         Abstract method to destroy test environment
@@ -38,7 +45,7 @@ class LettuceWebTestEnviron(object):
 
         raise NotImplementedError("Please, implement GET url functionality")
 
-    def pre_process_response(response_body, response, tree=False):
+    def pre_process_response(self, response_body, response, tree=False):
         """
         This method may be overriden in concrete framework
         environment implementation to preprocess raw response
@@ -46,7 +53,7 @@ class LettuceWebTestEnviron(object):
         """
         return response_body
 
-    def post_process_response(response_body, lxml_tree, response):
+    def post_process_response(self, response_body, lxml_tree, response):
         """
         Thid method may be overriden to customize LXML tree or
         post-process response
