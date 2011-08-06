@@ -8,7 +8,7 @@ setup(
     version='0.1',
     description='Behavior Driven Development (BDD) '\
                 'abstract web driver for lettuce',
-    long_description=open('README').read(),
+    long_description=open('README.markdown').read(),
     # Get more strings from
     # http://www.python.org/pypi?:action=list_classifiers
     author='Max Klymyshyn',
