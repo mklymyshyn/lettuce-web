@@ -38,7 +38,8 @@ def open_url(step, url, skip_tree):
         tree = False
 
     world.current_view = url
-    world.response, world.content = world.env.url(url=url, tree=tree)
+    world.response, world.response_code, \
+        world.content = world.env.url(url=url, tree=tree)
 
 
 @step(u"Should(.*) be link to \"(.*)\" view")
@@ -125,7 +126,7 @@ def assert_response_code(step, status_code):
     """
     status_code = int(status_code)
 
-    response = world.response
-    assert response.status_code == status_code, \
+    response_code = world.response_code
+    assert response_code == status_code, \
         "You've got %d status code, "\
-            "expected one is %d" % (response.status_code, status_code)
+            "expected one is %d" % (response_code, status_code)

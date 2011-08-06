@@ -156,7 +156,8 @@ def submit_form(step, form_num, follow):
         action = form.action
 
     world.current_view = None
-    world.response, world.content = env.url(url=action,
+    world.response, world.response_code, world.content = env.url(
+                                            url=action,
                                             post=is_post,
                                             tree=True,
                                             data=dict(form.fields.iteritems()),
