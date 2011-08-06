@@ -43,7 +43,7 @@ def tear_down():
 
 
 @before.each_scenario
-def setup_scenario():
+def setup_scenario(scenario):
     """
     Setup test environment for each scenario
     """
@@ -51,7 +51,7 @@ def setup_scenario():
 
 
 @after.each_scenario
-def teardown_scenario():
+def teardown_scenario(scenario):
     """
     Teardown test environment for
     each scenario
@@ -66,6 +66,7 @@ def bootstrap_environ():
     """
     obj = get_env()
     obj.bootstrap()
+    world.env = obj
 
 
 @after.all
