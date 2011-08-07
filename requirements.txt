@@ -1,3 +1,4 @@
 fudge
 lettuce
 lxml
+nose

@@ -1,5 +1,14 @@
 from lettuce import after, before, world
 
+# we'll use here asterisk import to avoid annoying
+# imports of each function in that modules
+from lettuce_web.generic import *
+from lettuce_web.forms import *
+
+
+__all__ = ('bootstrap_environ', 'destroy_environ', 'setup_scenario',
+           'set_up', 'tear_down', 'teradown_scenario', 'world')
+
 
 def get_env():
     """
@@ -65,14 +74,22 @@ def bootstrap_environ():
     Bootstrap environment
     """
     obj = get_env()
+
+    if not obj:
+        return
+
     obj.bootstrap()
     world.env = obj
 
 
 @after.all
-def destroy_environ():
+def destroy_environ(env):
     """
     Destroy test environment
     """
     obj = get_env()
+
+    if not obj:
+        return
+
     obj.destroy()

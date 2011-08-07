@@ -15,15 +15,24 @@ class DummyEnviron(LettuceWebTestEnviron):
         """
         Just return originally requested url
         """
+        if url == 'test':
+            return '/builded-view/'
         return url
 
-    def get_url(self, *kwargs):
+    def get_url(self, url, **kwargs):
         """
         Mock GET request with fake html page
         """
-        return {}, 200, self.fake_html
+        code = 200
 
-    def post_url(self, **kwargs):
+        # handle '/redirect' url and
+        # show 304 HTTP response code
+        if url == '/redirect':
+            code = 304
+
+        return {}, code, self.fake_html
+
+    def post_url(self, *args, **kwargs):
         """
         Mock POST request with fake HTML page
         """

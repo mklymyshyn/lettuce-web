@@ -40,3 +40,16 @@ The work of setup/teardown of the environment have strict order:
   1. In `@before.each_scenario` will be called `env_instance.set_up()`
   1. And in `@after.each_scenario` will be called `env_instance.tear_down()`
   1. At last, in `@after.all` will be called `env_instance.destroy()`
+
+
+Step Matchers
+--------------------
+
+The following lettuce step matchers are included in this package and can be used with Given/When/Then/And as desired.
+
+  1. `I go to the "home" view` - go to "home" view. You may specify both
+  url or specific or named url as argument but you also should care about
+  resolving named urls in `build_url` method of your driver.
+  1. `I go to the "/" view without tree` - go to the view but without building 
+  LXML tree
+
