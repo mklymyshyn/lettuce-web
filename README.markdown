@@ -4,6 +4,21 @@ Lettuce Web
 *Behavior Driven Development (BDD) abstract web driver for
 [lettuce](http://lettuce.it)*
 
+### The Problem
+
+Lettuce is great tool to using BDD approach on the project. But the problem
+is that sometimes we not use django to create websites. Sometimes we aren't use
+even python. In this case we need to create some environment to concentrate
+our efforts on testing rather than fall into routine things like opening url or parsing forms.
+
+### The Solution
+
+*Lettuce Web* will take care of routine steps. Here is form parser, typical
+things like `assert_url`, `assert_form_fields` or `assert_contains`.
+The only thing on you is provide *driver* for your framework or
+application.
+
+
 
 Internals
 --------------------
