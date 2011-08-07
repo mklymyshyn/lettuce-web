@@ -64,10 +64,11 @@ def assert_link(step, invert_text, view):
 
     content, tree = world.response_body, world.tree
 
-    url = world.env.get_url(view)
+    url = world.env.build_url(view)
 
     # find links and set `links` flag respectively to True/False
-    links = bool([link for link in tree.iterlinks() if url in link[2]])
+    links = bool([link for link in tree.iterlinks()
+                            if link[2].split('?')[0] == url])
 
     assert_mode = {
         False: links is True,

@@ -3,13 +3,13 @@
 from lxml.html import HtmlElement
 
 from lettuce import step, world, before
-from nose.tools import assert_equal, assert_true, assert_raises
+from nose.tools import assert_equal, assert_false, assert_true, assert_raises
 
 
 @before.each_step
 def cleanup_attributes(step):
     """
-    Shortcut to cleanup last page attributes
+    Shortcut to cleanup last opened page attributes
     from `world`
     """
 
@@ -74,8 +74,57 @@ def test_response_code_304(step):
 
 
 @step("Check that link exist")
-def test_link_existing(step):
+def test_link_exist(step):
     step.given('I go to the "/" view')
 
-    #step.given('')
+    # check firstly that link exist on the page
+    assert_true('href="/builded-view/"' in world.response_body)
 
+    # then check that step work as expected
+    step.given('Should be link to "test" view')
+
+    # check that url exist on the page too
+    step.given('Should be link to "/builded-view/" view')
+
+    # TODO: we should take care about more complex urls like
+    #   - /testurl/?test
+    #   - /testurl/#test
+
+
+@step("Check that link doesn't exist")
+def test_link_not_exist(step):
+    step.given('I go to the "/" view')
+
+    # check that link not exist on the page
+    assert_false('href="/"' in world.response_body)
+
+    # then check that step work as expected
+    step.given('Shouldn\'t be link to "/" view')
+    step.given('Should not be link to "/" view')
+
+
+@step("Check that body contains string")
+def test_body_contains_string(step):
+    step.given('I go to the "/" view')
+
+    assert_true('Important test' in world.response_body)
+
+    step.given('Page body contain "Important test"')
+
+
+@step("Check that body doesn't contain string")
+def test_body_not_contain_string(step):
+    step.given('I go to the "/" view')
+
+    assert_false('No test' in world.response_body)
+
+    step.given('Page body not contain "No test"')
+
+
+@step("Check that body contain string exactly 2 times")
+def test_body_contain_string_2times(step):
+    step.given('I go to the "/" view')
+
+    assert_equal(world.response_body.count('Important test'), 2)
+
+    step.given('Page body contain "Important test", exactly 2 times')
