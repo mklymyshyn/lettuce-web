@@ -63,3 +63,5 @@ The following lettuce step matchers are included in this package and can be used
   `Fill the field "email" with "me@example.com"`
   1. Fill specified field with provided value in specific form:
   `Fill the field "email" with "me@example.com" in form #1`
+  1. Submit form with `Submit form #1`. The index of forms order
+  starting from **1**.
