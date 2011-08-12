@@ -2,33 +2,20 @@
 
 from lxml.html import HtmlElement
 
-from lettuce import step, world, before
-from nose.tools import assert_equal, assert_false, assert_true, assert_raises
-
-
-@before.each_step
-def cleanup_attributes(step):
-    """
-    Shortcut to cleanup last opened page attributes
-    from `world`
-    """
-
-    try:
-        delattr(world, 'response_body')
-        delattr(world, 'response_code')
-        delattr(world, 'response')
-    except AttributeError:
-        pass
-
-    with assert_raises(AttributeError):
-        world.response_body
-        world.response_code
-        world.response
+from lettuce import step, world
+from nose.tools import assert_equal, assert_false, \
+                       assert_is_not_none, assert_true
 
 
 @step("Open url")
 def test_open_url(step):
     step.given('I go to the "/" view')
+
+    # check that page is loaded
+    assert_is_not_none(getattr(world, 'response_body'))
+    assert_is_not_none(getattr(world, 'response_code'))
+    assert_is_not_none(getattr(world, 'response'))
+    assert_is_not_none(getattr(world, 'tree'))
 
     # check that response is 200
     assert_equal(world.response_code, 200)

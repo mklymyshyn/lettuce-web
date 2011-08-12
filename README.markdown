@@ -52,4 +52,14 @@ The following lettuce step matchers are included in this package and can be used
   resolving named urls in `build_url` method of your driver.
   1. `I go to the "/" view without tree` - go to the view but without building 
   LXML tree
+  1. Check that form with provided fields exist on the page:
 
+        There's form with following fields:
+            | name |
+            | email |
+            | theme_selections_* |
+
+  1. Fill specified field with provided value:
+  `Fill the field "email" with "me@example.com"`
+  1. Fill specified field with provided value in specific form:
+  `Fill the field "email" with "me@example.com" in form #1`
