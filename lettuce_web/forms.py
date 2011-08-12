@@ -32,7 +32,7 @@ def assert_form_fields(step):
                                 *[hs.values() for hs in step.hashes] +
                                  [hs.keys() for hs in step.hashes[0:1]])]))
 
-    content, tree = world.content, world.tree
+    content, tree = world.response_body, world.tree
     vary_fields = [fields.pop(i) for i, fld in enumerate(fields)
                                                         if '*' in fld]
 
@@ -92,7 +92,7 @@ def fill_form_field(step, field, value, form_id):
         form_num = None
 
     view = '<undefined>'
-    content, tree = world.content, world.tree
+    content, tree = world.response_body, world.tree
 
     if hasattr(world, 'current_view'):
         view = world.current_view
@@ -139,7 +139,7 @@ def submit_form(step, form_num, follow):
         })
 
     form_num = int(form_num)
-    content, tree, env = world.content, world.tree, world.env
+    content, tree, env = world.response_body, world.tree, world.env
 
     if len(tree.forms) < form_num:
         assert False, "There's no form with #%d" % form_num
@@ -156,7 +156,7 @@ def submit_form(step, form_num, follow):
         action = form.action
 
     world.current_view = None
-    world.response, world.response_code, world.content = env.url(
+    world.response, world.response_code, world.response_body = env.url(
                                             url=action,
                                             post=is_post,
                                             tree=True,

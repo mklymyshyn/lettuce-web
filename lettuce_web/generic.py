@@ -9,7 +9,7 @@ __all__ = ('open_url', 'assert_link', 'assert_contains',
            'assert_response_code')
 
 
-@step(u"I go to the \"([A-Za-z0-9\_\-]+)\" view(.*)")
+@step(u"I go to the \"(.*)\" view(.*)")
 def open_url(step, url, skip_tree):
     """
     Generic step to open URL of the site.
@@ -38,8 +38,10 @@ def open_url(step, url, skip_tree):
         tree = False
 
     world.current_view = url
-    world.response, world.response_code, \
-        world.content = world.env.url(url=url, tree=tree)
+
+    world.response, \
+    world.response_code, \
+    world.response_body = world.env.url(url=url, tree=tree)
 
 
 @step(u"Should(.*) be link to \"(.*)\" view")
@@ -49,18 +51,24 @@ def assert_link(step, invert_text, view):
 
     This feature make life easy if different views should be available
     for different users (role-based permissions)
+
+    Usage examples:
+        Should be link to "/" view
+        Shouldn't be link to "/test" view
+        Should not be link to "/home" view
     """
 
     invert = False
     if invert_text in [u'n\'t', u' not']:
         invert = True
 
-    content, tree = world.content, world.tree
+    content, tree = world.response_body, world.tree
 
-    url = world.env.get_url(view)
+    url = world.env.build_url(view)
 
     # find links and set `links` flag respectively to True/False
-    links = bool([link for link in tree.iterlinks() if url in link[2]])
+    links = bool([link for link in tree.iterlinks()
+                            if link[2].split('?')[0] == url])
 
     assert_mode = {
         False: links is True,
@@ -96,7 +104,7 @@ def assert_contains(step, not_contains, text, count):
     except (AttributeError, ValueError):
         count = None
 
-    content = world.content
+    content = world.response_body
 
     checks = {
         False: text in content,

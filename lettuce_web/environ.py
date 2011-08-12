@@ -77,7 +77,11 @@ class LettuceWebTestEnviron(object):
         LXML tree and so on
 
         if tree == True then to the worl LXML tree parsed value
-        will be added
+        will be added.
+
+        LXML tree available in `world` as `tree` attribute,
+        current view url (built by `build_url` method) will be
+        passed to the `world` as `current_url` attribute
 
         Usage:
             world.env.url(url='<view>')
@@ -97,6 +101,7 @@ class LettuceWebTestEnviron(object):
 
         url = self.build_url(url)
 
+        self.world.current_url = url
         self.world.tree = None
 
         url_func = getattr(self, '%s_url' % request_method[post])

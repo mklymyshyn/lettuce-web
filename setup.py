@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# diry hack, bug in setuptools:
+# http://www.eby-sarna.com/pipermail/peak/2010-May/003355.html
+import multiprocessing
+
 from setuptools import setup, find_packages
 
 
@@ -21,6 +25,7 @@ setup(
         'lettuce',
         'lxml',
         'fudge',
+        'nose',
     ],
     install_requires=[
        'lettuce',
