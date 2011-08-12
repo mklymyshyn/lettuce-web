@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from lettuce import after, before, world
 
 # we'll use here asterisk import to avoid annoying

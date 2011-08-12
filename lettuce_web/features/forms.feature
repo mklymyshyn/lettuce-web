@@ -7,6 +7,7 @@ Feature: Forms
         Fill form and check that it filled properly
         Fill field in particular form
 
-#    Scenario: Test submit_form
-#        Fill form and submit it
-#        Fill form, submit and follow redirect
+    Scenario: Test submit_form
+        Fill form and submit it
+        Fill form and submit particular form
+        Fill form, submit and follow redirect

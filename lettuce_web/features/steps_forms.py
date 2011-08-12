@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from lettuce import step, world
-from nose.tools import assert_equal, assert_not_equal, assert_true
+from nose.tools import assert_equal, assert_true, assert_false
 
 
-@step("Check that form on the page contain fields")
+@step(u"Check that form on the page contain fields")
 def test_form_contain_fields(step):
     step.given('I go to the "/" view')
 
@@ -19,7 +21,7 @@ def test_form_contain_fields(step):
     """)
 
 
-@step("Check that page contain array fields")
+@step(u"Check that page contain array fields")
 def test_form_not_contain_fields(step):
     step.given('I go to the "/" view')
 
@@ -32,7 +34,7 @@ def test_form_not_contain_fields(step):
     """)
 
 
-@step("Fill form and check that it filled properly")
+@step(u"Fill form and check that it filled properly")
 def test_fill_form_field(step):
     step.given('I go to the "/" view')
 
@@ -52,7 +54,7 @@ def test_fill_form_field(step):
         assert_equal(form.inputs[name].value, val)
 
 
-@step("Fill field in particular form")
+@step(u"Fill field in particular form")
 def test_fill_particular_form(step):
     step.given('I go to the "/" view')
     name, val = "name", "name val"
@@ -63,3 +65,54 @@ def test_fill_particular_form(step):
     form = world.tree.forms[1]
 
     assert_equal(form.inputs[name].value, val)
+
+
+@step(u"Fill form and submit it")
+def test_fill_form_and_submit_it(step):
+    step.given('I go to the "/" view')
+
+    data = {
+        'name': 'name value',
+        'email': 'test@example.com',
+    }
+
+    for name, val in data.iteritems():
+        step.given('Fill the field "%s" with "%s"' % (name, val))
+
+    step.given("Submit form #1")
+
+    assert_true(hasattr(world.env, 'request_data'))
+
+    for name, val in data.iteritems():
+        assert_equal(world.env.request_data.get(name), val)
+
+
+@step(u"Fill form and submit particular form")
+def test_fill_forms_and_submit_particular(step):
+    step.given('I go to the "/" view')
+
+    name, val = "name", "name val"
+    step.given('Fill the field "%s" with "%s" in form #2' % (name, val))
+
+    step.given("Submit form #2")
+
+    assert_true(hasattr(world.env, 'request_data'))
+
+    assert_equal(world.env.request_data.get(name), val)
+    assert_false('email' in world.env.request_data)
+
+
+@step(u"Fill form, submit and follow redirect")
+def test_submit_form_and_follow(step):
+    step.given('I go to the "/" view')
+
+    name, val = "name", "name val"
+    step.given('Fill the field "%s" with "%s" in form #2' % (name, val))
+
+    # monkey-patch action of the form
+    world.tree.forms[1].action = '/redirect'
+
+    step.given("Submit form #2")
+
+    assert_equal(world.response_code, 304)
+    assert_equal(world.env.request_data.get(name), val)

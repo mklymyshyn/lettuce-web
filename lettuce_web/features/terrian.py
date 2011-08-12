@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 from lettuce import before, world
@@ -36,11 +38,19 @@ class DummyEnviron(LettuceWebTestEnviron):
 
         return {}, code, self.fake_html
 
-    def post_url(self, *args, **kwargs):
+    def post_url(self, url, **kwargs):
         """
         Mock POST request with fake HTML page
         """
-        return {}, 200, self.fake_html
+        code = 200
+
+        if url == '/redirect':
+            code = 304
+
+        if 'data' in kwargs:
+            self.request_data = kwargs.pop('data')
+
+        return {}, code, self.fake_html
 
 
 # we use here direct link to absorb.world to avoid
