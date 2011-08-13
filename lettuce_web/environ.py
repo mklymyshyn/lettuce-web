@@ -32,8 +32,9 @@ class LettuceWebTestEnviron(object):
         Abstract method to destroy test environment
         after all scenarios
         """
-
-        pass
+        # we should force delete environment from
+        # `lettuce.world`
+        delattr(self.world, 'env')
 
     def get_url(self, **kwargs):
         """
