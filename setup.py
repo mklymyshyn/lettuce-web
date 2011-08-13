@@ -26,6 +26,7 @@ setup(
         'lxml',
         'fudge',
         'nose',
+        'flask',
     ],
     install_requires=[
        'lettuce',
