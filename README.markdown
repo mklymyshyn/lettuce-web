@@ -65,3 +65,38 @@ The following lettuce step matchers are included in this package and can be used
   `Fill the field "email" with "me@example.com" in form #1`
   1. Submit form with `Submit form #1`. The index of forms order
   starting from **1**.
+
+
+Drivers
+--------------------
+
+### Flask
+
+To use driver for flask [Flask](http://flask.pocoo.org/) requirements are:
+  1. Inherit from `lettuce_web.drivers.flask.LettuceFlaskTestEnviron`
+  1. Override `bootstrap` method: in this overriden method you should
+  initialize your **Flask app**, for example make `self.app = Flask(__name__)` or
+  something more appropriate to your project.
+  1. **Very important!**, please call `super(YourFlaskDriver, self).bootstrap()`
+  at end of your own `bootstrap` method.
+  *In other case FlaskDriver will not work!*
+  1. Define `absorb.world.webenv_class`
+
+  **Example:**
+
+    from flask import Flask
+
+    from lettuce_web.drivers.flask import LettuceFlaskTestEnviron
+    from lettuce_web import absorb
+
+
+    class DummyFlaskDriver(LettuceFlaskTestEnviron):
+        def bootstrap(self):
+            self.app = Flask(__name__)
+
+            super(DummyFlaskDriver, self).bootstrap()
+
+
+    # we should define `webenv_class`, all other bootstrap
+    # things will be done automatically
+    absorb.world.webenv_class = DummyFlaskDriver
